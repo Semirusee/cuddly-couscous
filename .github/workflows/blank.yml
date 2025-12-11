@@ -1,0 +1,39 @@
+package com.example.bluetoothchat;
+
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+public class MainActivity extends Activity {
+
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothService btService;
+    private ListView messagesView;
+    private EditText inputField;
+    private Button sendButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        btService = new BluetoothService(bluetoothAdapter);
+
+        messagesView = findViewById(R.id.messages_view);
+        inputField = findViewById(R.id.input_field);
+        sendButton = findViewById(R.id.send_button);
+
+        sendButton.setOnClickListener(v -> {
+            String message = inputField.getText().toString();
+            btService.sendMessage(message);
+            inputField.setText("");
+        });
+
+        btService.start(); // avvia il servizio di chat Bluetooth
+    }
+}
