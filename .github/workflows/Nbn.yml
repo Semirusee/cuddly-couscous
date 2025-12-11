@@ -1,0 +1,40 @@
+package com.example.bluetoothchat;
+
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.util.Log;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
+
+public class BluetoothService extends Thread {
+
+    private final BluetoothAdapter adapter;
+    private BluetoothSocket socket;
+    private OutputStream out;
+    private InputStream in;
+    private Activity activity;
+
+    private static final UUID APP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
+    public BluetoothService(BluetoothAdapter adapter, Activity activity) {
+        this.adapter = adapter;
+        this.activity = activity;
+    }
+
+    public void run() {
+        // Qui puoi aggiungere la logica per connetterti a dispositivi e ricevere messaggi
+        Log.d("BluetoothService", "Thread Bluetooth avviato");
+    }
+
+    public void sendMessage(String message) {
+        try {
+            if (out != null) out.write(message.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
